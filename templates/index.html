@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doora</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <div id="dropzone">
+        <form method="post" action="http://up.qiniu.com/" enctype="multipart/form-data">
+            <input name="token" type="hidden" value="{{ up_token }}" />
+            <input name="file" type="file" />
+            <input type="submit" value="upload" />
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            var xhr = new XMLHttpRequest();
+            var form_data = new FormData();
+            form_data.append();
+            xhr.onreadystatechange = function() {
+            };
+            xhr.open('POST', setting.uploadUrl, true);
+            xhr.send(form_data);
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-##Doora： Just another file sharing service
+##Doora：Just another file sharing service
 
 ### Introduction
 
@@ -19,3 +19,5 @@ A live demo is at: <http://lab.wong2.me/doora/> (files are kept for 30 minutes)
 2. `cd doora`, edit `config.py`
 3. run `app.py`
 4. if you need file expiration, set the expire time in `config.py`, then run `rqworker doora` and `rqscheduler` in terminal.
+
+❤

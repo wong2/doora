@@ -6,7 +6,10 @@ SECRET_KEY = ''
 BUCKET_NAME = ''
 Q_DOMAIN = '' # your qiniu domain
 
-CALLBACK_URL = ''
+CALLBACK_URL = '' # explained in http://docs.qiniu.com/api/v6/put.html#put-policy
+
+
+# NOTE: following configs are only necessary if you need file expiration
 
 EXPIRE_TIME = 0 # file expire time in minutes (0 means no expire)
 NEED_EXPIRE = EXPIRE_TIME > 0

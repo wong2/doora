@@ -4,26 +4,36 @@
     <meta charset="UTF-8">
     <title>Doora</title>
     <style type="text/css">
+        #nprogress .bar {
+            background: #29d;
+            width: 300px;
+            height: 2px;
+        }
+        #dropzone {
+            border: red solid thin;
+            width: 400px;
+            height: 400px;
+        }
+        #dropzone.hover {
+            border: blue solid thin;
+        }
     </style>
 </head>
 <body>
     <div id="dropzone">
-        <form method="post" action="http://up.qiniu.com/" enctype="multipart/form-data">
-            <input name="token" type="hidden" value="{{ up_token }}" />
-            <input name="file" type="file" />
-            <input type="submit" value="upload" />
-        </form>
     </div>
-    <script type="text/javascript">
-        $(function() {
-            var xhr = new XMLHttpRequest();
-            var form_data = new FormData();
-            form_data.append();
-            xhr.onreadystatechange = function() {
-            };
-            xhr.open('POST', setting.uploadUrl, true);
-            xhr.send(form_data);
-        });
+
+    <script type="text/x-template" id="upload-ui-tmpl">
+        <div id="nprogress">
+            <div class="bar" role="bar"></div>
+        </div>
     </script>
+    <script type="text/x-template" id="result-ui-tmpl">
+    </script>
+
+    <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.1-beta1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/nprogress/0.1.2/nprogress.min.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mustache.js/0.7.2/mustache.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
 </body>
 </html>

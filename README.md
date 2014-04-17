@@ -1,4 +1,4 @@
-##Doora：Just another file sharing service
+##Doora: Just another file sharing service
 
 ### Introduction
 

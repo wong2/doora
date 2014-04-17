@@ -1,82 +1,41 @@
-$(function() {
+(function() {
 
-    NProgress.configure({ 
-        minimum: 0,
-        trickle: false
-    });
-
-    function handleFiles(files) {
-        var formData = new FormData();
-        for (var i = 0; i < files.length; i++) {
-            formData.append('file', files[i]);
-            showUploadUI(files[i]);
+    Dropzone.options.dropzone = {
+        method: 'post',
+        maxFilesize: 20,
+        init: function() {
+            this.on('sending', function(file, xhr, formData) {
+                formData.append('token', UP_TOKEN);
+            });
+            this.on('success', function(file, resp) {
+                showResultPanel(resp.download_url);
+            });
+            this.on('reset', function() {
+            });
         }
-        formData.append('token', '');
-        upload(formData);
+    };
+
+    function showResultPanel(download_url) {
+        var tmpl = $('#result-panel-tmpl').html(),
+            html = tmpl.replace('${download_url}', download_url);
+
+        $('#dropzone').append(html);
+        $('.download-url').focus().select();
+
+        renderQRCode(download_url);
+
+        $('.dz-preview').animate({
+            width: '700px',
+            height: '330px'
+        });
     }
 
-    function render(tmpl_selector, data) {
-        return Mustache.render($(tmpl_selector).html(), data);
+    function renderQRCode(url) {
+        $('#qrcode-container').qrcode({
+            text: url,
+            width: 250,
+            height: 250
+        });
     }
 
-    function showUploadUI(file) {
-        var html = render('#upload-ui-tmpl', file);
-        $('#dropzone').html(html);
-    }
-
-    function showResultUI(result) {
-        var html = Mustache.render('#result-ui-tmpl', result);
-    }
-
-    function upload(formData) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    NProgress.done();
-                    showResultUI(JSON.parse(xhr.responseText));
-                }
-                else{
-                    NProgress.remove();
-                    alert('上传失败');
-                }
-            }
-        };
-        xhr.upload.onprogress = function (event) {
-            if (event.lengthComputable) {
-                var percent = event.loaded / event.total;
-                NProgress.set(percent);
-            }
-        };
-        xhr.open('POST', 'http://up.qiniu.com', true);
-        xhr.send(formData);
-
-        NProgress.start();
-    }
-
-
-    var dropzone = $('#dropzone');
-
-    dropzone.on('dragover', function(event) {
-        event.preventDefault();  
-        event.stopPropagation();
-        $(this).addClass('hover');
-    });
-    dropzone.on('dragend', function(event) {
-        event.preventDefault();  
-        event.stopPropagation();
-        $(this).removeClass('hover');
-    });
-    dropzone.on('dragleave', function(event) {
-        event.preventDefault();  
-        event.stopPropagation();
-        $(this).removeClass('hover');
-    });
-    dropzone.on('drop', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        $(this).removeClass('hover');
-        handleFiles(event.originalEvent.dataTransfer.files);
-    });
-
-});
+})();

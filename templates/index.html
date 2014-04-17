@@ -3,37 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Doora</title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/dropzone/3.8.2/css/dropzone.css" />
     <style type="text/css">
-        #nprogress .bar {
-            background: #29d;
-            width: 300px;
-            height: 2px;
+        body {
+            background-color: rgb(244, 244, 244);
         }
-        #dropzone {
-            border: red solid thin;
-            width: 400px;
-            height: 400px;
+        #dropzone.dropzone {
+            position: absolute;
+            top:0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 800px;
+            height: 500px;
         }
-        #dropzone.hover {
-            border: blue solid thin;
+        .qrcode {
+            position: absolute;
+            top: 75px;
+            right: 100px;
+        }
+        .download-url {
+            width: 700px;
+            height: 50px;
+            position: absolute;
+            left: 40px;
+            bottom: 30px;
+            font-size: 35px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div id="dropzone">
-    </div>
-
-    <script type="text/x-template" id="upload-ui-tmpl">
-        <div id="nprogress">
-            <div class="bar" role="bar"></div>
-        </div>
+    <form id="dropzone" class="dropzone" action="http://up.qiniu.com"></form>
+    <script type="text/x-template" id="result-panel-tmpl">
+        <div id="qrcode-container" class="qrcode"></div>
+        <input type="text" class="download-url" value="${download_url}" />
     </script>
-    <script type="text/x-template" id="result-ui-tmpl">
-    </script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/load.js/1316434407/load-min.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/dropzone/3.8.2/dropzone.min.js"></script>
+    <script type="text/javascript">
+        window.UP_TOKEN = '{{up_token}}';
 
-    <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.1-beta1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdn.staticfile.org/nprogress/0.1.2/nprogress.min.js"></script>
-    <script type="text/javascript" src="http://cdn.staticfile.org/mustache.js/0.7.2/mustache.min.js"></script>
+        var zepto_js = "http://cdn.staticfile.org/zepto/1.0rc1/zepto.min.js",
+            qrcode_js = "http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js";
+            
+        load(zepto_js).thenRun(function() {
+            window.jQuery = $;
+            load(qrcode_js);
+        });
+    </script>
     <script type="text/javascript" src="/static/js/main.js"></script>
 </body>
 </html>

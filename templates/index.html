@@ -76,6 +76,15 @@
     </script>
     <script type="text/javascript">
 
+        function randomString(length) {
+            var possibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+                chars = [];
+            for(var i = 0; i < length; i++) {
+                chars.push(possibles.charAt(Math.floor(Math.random() * possibles.length)));
+            }
+            return chars.join('');
+        }
+
         var zepto_js = "http://cdn.staticfile.org/zepto/1.0rc1/zepto.min.js",
             qrcode_js = "http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js",
             dropzone_js = "http://cdn.staticfile.org/dropzone/3.8.2/dropzone.min.js",
@@ -94,7 +103,14 @@
                 thumbnailHeight: 200,
                 init: function() {
                     this.on('sending', function(file, xhr, formData) {
+                        var filename = file.name,
+                            extension = filename.indexOf('.') > -1  ? filename.split('.').pop() : '',
+                            random_filename = randomString(5),
+                            key = random_filename + (extension ? '.' + extension : '');
+
                         formData.append('token', '{{ up_token }}');
+                        formData.append('key', key);
+                        formData.append('x:key', key);
                     });
                     this.on('success', function(file, resp) {
                         showResultPanel(resp.download_url);

@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     policy = qiniu.rs.PutPolicy(BUCKET_NAME)
-    policy.callbackBody = 'key=$(etag)'
+    policy.callbackBody = 'key=$(x:key)'
     policy.callbackUrl = CALLBACK_URL
     up_token = policy.token()
 

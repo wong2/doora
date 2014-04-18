@@ -43,6 +43,10 @@
             width: 200px;
             height: 200px;
         }
+        #dropzone.success .dz-details img {
+            width: 200px;
+            height: 200px;
+        }
         #dropzone.success .dz-filename span {
             position: absolute;
             top: 0;
@@ -86,7 +90,8 @@
             Dropzone.options.dropzone = {
                 method: 'post',
                 maxFilesize: 20,
-                createImageThumbnails: false,
+                thumbnailWidth: 200,
+                thumbnailHeight: 200,
                 init: function() {
                     this.on('sending', function(file, xhr, formData) {
                         formData.append('token', '{{ up_token }}');
@@ -96,8 +101,6 @@
                     });
                     this.on('addedfile', function() {
                         resetDropzone();
-                    });
-                    this.on('reset', function() {
                     });
                 }
             };

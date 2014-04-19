@@ -96,7 +96,8 @@
         });
 
         load(dropzone_js).thenRun(function() {
-            Dropzone.options.dropzone = {
+            Dropzone.autoDiscover = false;
+            var zone = new Dropzone('#dropzone', {
                 method: 'post',
                 maxFilesize: 20,
                 thumbnailWidth: 200,
@@ -119,7 +120,7 @@
                         resetDropzone();
                     });
                 }
-            };
+            });
 
             function resetDropzone() {
                 $('#dropzone').removeClass('success');

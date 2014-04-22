@@ -12,7 +12,7 @@ connection = Redis(REDIS_HOST, port=REDIS_PORT)
 scheduler = Scheduler('doora', connection=connection)
 
 
-class DELETE_ERROR(Exception):
+class DeleteError(Exception):
     pass
 
 
@@ -26,4 +26,4 @@ def add_to_expire_queue(file_key, expire_in=EXPIRE_TIME):
 def delete_file(file_key):
     ret, err = qiniu.rs.Client().delete(BUCKET_NAME, file_key)
     if err is not None:
-        raise DELETE_ERROR
+        raise DeleteError

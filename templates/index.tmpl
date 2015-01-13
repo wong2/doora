@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doora</title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/dropzone/3.8.2/css/dropzone.css" />
+    <style type="text/css">
+        body {
+            background-color: rgb(244, 244, 244);
+        }
+        .logo {
+            display: block;
+            width: 80px;
+            margin: 30px auto;
+        }
+        #dropzone.dropzone {
+            position: absolute;
+            top:0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 800px;
+            height: 500px;
+        }
+        .qrcode {
+            position: absolute;
+            top: 75px;
+            right: 100px;
+        }
+        .download-url {
+            width: 700px;
+            height: 50px;
+            position: absolute;
+            left: 40px;
+            bottom: 30px;
+            font-size: 35px;
+            text-align: center;
+        }
+        #dropzone.success .dz-details {
+            top: 50px;
+            left: 100px;
+            width: 200px;
+            height: 200px;
+        }
+        #dropzone.success .dz-details img {
+            width: 200px;
+            height: 200px;
+        }
+        #dropzone.success .dz-filename span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 150px;
+            height: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="" class="logo">
+        <img src="http://doora.qiniudn.com/logo.png" alt="Logo" />
+    </a>
+    <form id="dropzone" class="dropzone" action="http://up.qiniu.com"></form>
+
+    <script type="text/x-template" id="result-panel-tmpl">
+        <div id="qrcode-container" class="qrcode"></div>
+        <input type="text" class="download-url" value="${download_url}" readonly="readonly"  />
+    </script>
+
+    <script type="text/javascript">
+    // load.js, put it here for speed.
+    function asyncLoadScript(a){return function(b,c){var d=document.createElement("script");d.type="text/javascript",d.src=a,d.onload=b,d.onerror=c,d.onreadystatechange=function(){var a=this.readyState;if(a==="loaded"||a==="complete")d.onreadystatechange=null,b()},head.insertBefore(d,head.firstChild)}}(function(a){a=a||{};var b={},c,d;c=function(a,d,e){var f=a.halt=!1;a.error=function(a){throw a},a.next=function(c){c&&(f=!1);if(!a.halt&&d&&d.length){var e=d.shift(),g=e.shift();f=!0;try{b[g].apply(a,[e,e.length,g])}catch(h){a.error(h)}}return a};for(var g in b){if(typeof a[g]=="function")continue;(function(e){a[e]=function(){var g=Array.prototype.slice.call(arguments);if(e==="onError"){if(d)return b.onError.apply(a,[g,g.length]),a;var h={};return b.onError.apply(h,[g,g.length]),c(h,null,"onError")}return g.unshift(e),d?(a.then=a[e],d.push(g),f?a:a.next()):c({},[g],e)}})(g)}return e&&(a.then=a[e]),a.call=function(b,c){c.unshift(b),d.unshift(c),a.next(!0)},a.next()},d=a.addMethod=function(d){var e=Array.prototype.slice.call(arguments),f=e.pop();for(var g=0,h=e.length;g<h;g++)typeof e[g]=="string"&&(b[e[g]]=f);--h||(b["then"+d.substr(0,1).toUpperCase()+d.substr(1)]=f),c(a)},d("chain",function(a){var b=this,c=function(){if(!b.halt){if(!a.length)return b.next(!0);try{null!=a.shift().call(b,c,b.error)&&c()}catch(d){b.error(d)}}};c()}),d("run",function(a,b){var c=this,d=function(){c.halt||--b||c.next(!0)},e=function(a){c.error(a)};for(var f=0,g=b;!c.halt&&f<g;f++)null!=a[f].call(c,d,e)&&d()}),d("defer",function(a){var b=this;setTimeout(function(){b.next(!0)},a.shift())}),d("onError",function(a,b){var c=this;this.error=function(d){c.halt=!0;for(var e=0;e<b;e++)a[e].call(c,d)}})})(this);var head=document.getElementsByTagName("head")[0]||document.documentElement;addMethod("load",function(a,b){for(var c=[],d=0;d<b;d++)(function(b){c.push(asyncLoadScript(a[b]))})(d);this.call("run",c)})
+    </script>
+    <script type="text/javascript">
+
+        function randomString(length) {
+            var possibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+                chars = [];
+            for(var i = 0; i < length; i++) {
+                chars.push(possibles.charAt(Math.floor(Math.random() * possibles.length)));
+            }
+            return chars.join('');
+        }
+
+        var zepto_js = "http://cdn.staticfile.org/zepto/1.0rc1/zepto.min.js",
+            qrcode_js = "http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js",
+            dropzone_js = "http://cdn.staticfile.org/dropzone/3.8.2/dropzone.min.js",
+            zerocb_js = "http://cdn.staticfile.org/zeroclipboard/1.3.5/ZeroClipboard.min.js";
+
+        load(zepto_js).thenRun(function() {
+            window.jQuery = $;
+            load(qrcode_js);
+        });
+
+        load(dropzone_js).thenRun(function() {
+            Dropzone.autoDiscover = false;
+            var zone = new Dropzone('#dropzone', {
+                method: 'post',
+                maxFilesize: 20,
+                thumbnailWidth: 200,
+                thumbnailHeight: 200,
+                init: function() {
+                    this.on('sending', function(file, xhr, formData) {
+                        var filename = file.name,
+                            extension = filename.indexOf('.') > -1  ? filename.split('.').pop() : '',
+                            random_filename = randomString(5),
+                            key = random_filename + (extension ? '.' + extension : '');
+
+                        formData.append('token', '{{ up_token }}');
+                        formData.append('key', key);
+                        formData.append('x:key', key);
+                    });
+                    this.on('success', function(file, resp) {
+                        showResultPanel(resp.download_url);
+                    });
+                    this.on('addedfile', function() {
+                        resetDropzone();
+                    });
+                }
+            });
+
+            function resetDropzone() {
+                $('#dropzone').removeClass('success');
+                $('.dz-success').remove();
+                $('.dz-error').remove();
+                $('#qrcode-container').remove();
+                $('.download-url').remove();
+            }
+
+            function showResultPanel(download_url) {
+                var tmpl = $('#result-panel-tmpl').html(),
+                    html = tmpl.replace('${download_url}', download_url);
+
+                $('#dropzone').addClass('success').append(html);
+                $('.download-url').focus().select();
+
+                renderQRCode(download_url);
+
+                $('.dz-preview').animate({
+                    width: '700px',
+                    height: '330px'
+                });
+            }
+
+            function renderQRCode(url) {
+                $('#qrcode-container').qrcode({
+                    text: url,
+                    width: 250,
+                    height: 250
+                });
+            }
+        });
+
+    </script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=40186523" charset="UTF-8"></script>
+</body>
+</html>

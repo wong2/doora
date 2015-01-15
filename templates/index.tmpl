@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Doora</title>
-    <link rel="stylesheet" href="http://cdn.staticfile.org/dropzone/3.8.2/css/dropzone.css" />
+    <link rel="stylesheet" href="http://cdn.staticfile.org/dropzone/3.9.0/css/dropzone.css" />
     <style type="text/css">
         body {
             background-color: rgb(244, 244, 244);
@@ -87,8 +87,7 @@
 
         var zepto_js = "http://cdn.staticfile.org/zepto/1.0rc1/zepto.min.js",
             qrcode_js = "http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js",
-            dropzone_js = "http://cdn.staticfile.org/dropzone/3.9.0/dropzone.js",
-            zerocb_js = "http://cdn.staticfile.org/zeroclipboard/1.3.5/ZeroClipboard.min.js";
+            dropzone_js = "http://cdn.staticfile.org/dropzone/3.9.0/dropzone.min.js";
 
         load(zepto_js).thenRun(function() {
             window.jQuery = $;
@@ -143,7 +142,7 @@
                     html = tmpl.replace('${download_url}', download_url);
 
                 $('#dropzone').addClass('success').append(html);
-                $('.download-url').focus().select();
+                $('.download-url')[0].select();
 
                 renderQRCode(download_url);
 

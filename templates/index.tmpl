@@ -122,6 +122,13 @@
                 }
             });
 
+            $(document).on('paste', function(event){
+                var items = event.originalEvent.clipboardData.items;
+                if (items && items.length) {
+                    zone._addFilesFromItems(items);
+                }
+            })
+
             function resetDropzone() {
                 $('#dropzone').removeClass('success');
                 $('.dz-success').remove();

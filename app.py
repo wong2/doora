@@ -15,15 +15,14 @@ def index():
         'callbackBody': 'key=$(key)',
         'deleteAfterDays': EXPIRE_TIME,
     }
-    token = q.upload_token(BUCKET_NAME, policy)
+    token = q.upload_token(BUCKET_NAME, policy=policy)
     return render_template('index.html', token=token)
 
 
 @app.route('/callback', methods=['POST'])
 def upload_callback():
     key = request.form['key']
-    base_url = 'http://%s/%s' % (Q_DOMAIN, key)
-    download_url = q.private_download_url(base_url)
+    download_url = 'http://%s/%s' % (Q_DOMAIN, key)
     return jsonify(download_url=download_url)
 
 

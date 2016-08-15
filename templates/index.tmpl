@@ -112,7 +112,7 @@
                         var random_filename = randomString(5);
                         var key = random_filename + (extension ? '.' + extension : '');
 
-                        formData.append('token', '{{ up_token }}');
+                        formData.append('token', '{{ token }}');
                         formData.append('key', key);
                         formData.append('x:key', key);
                     });
